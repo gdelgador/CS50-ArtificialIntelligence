@@ -69,6 +69,10 @@ def main():
     if target is None:
         sys.exit("Person not found.")
 
+    print(f"source: {source} || target: {target}")
+
+    # print(neighbors_for_person(source))
+
     path = shortest_path(source, target)
 
     if path is None:
@@ -91,9 +95,29 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
+    # Keep track of number of states explored
+    num_explored = 0
 
+    # Initialize frontier to just the starting position
+    node = Node(state=source, parent=None, action=None)
+    frontier = StackFrontier()
+    frontier.add(source)
+
+    # Inicialize an empty explored set
+    explored = set()
+
+    # Keep looping until solution found
+
+    while True:
+
+        for mix in neighbors_for_person(source):
+            print('hola')
+        break
+    
     # TODO
-    raise NotImplementedError
+    # raise NotImplementedError
+
+    return None
 
 
 def person_id_for_name(name):
