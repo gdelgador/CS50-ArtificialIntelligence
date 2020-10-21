@@ -99,9 +99,9 @@ def shortest_path(source, target):
     num_explored = 0
 
     # Initialize frontier to just the starting position
-    node = Node(state=source, parent=None, action=None)
-    frontier = StackFrontier()
-    frontier.add(source)
+    start = Node(state=source, parent=None, action=None)
+    frontier = QueueFrontier()
+    frontier.add(start)
 
     # Inicialize an empty explored set
     explored = set()
@@ -110,14 +110,37 @@ def shortest_path(source, target):
 
     while True:
 
-        for mix in neighbors_for_person(source):
-            print('hola')
-        break
-    
-    # TODO
-    # raise NotImplementedError
+        # If nothing left in frontier, then no path
+        if frontier.empty():
+            raise Exception("no solution")
 
-    return None
+        # Choose a node from the frontier
+        node = frontier.remove()
+        num_explored += 1
+
+        # Mark node as explored
+        explored.add(node.state)
+
+        # explored.add(node.)
+
+        # explore in neighbors_for_person
+        for movie_id, person_id in neighbors_for_person(node.state):
+
+            if not frontier.contains_state(person_id) and person_id not in explored:
+                child = Node(state=person_id, parent=node, action=movie_id)
+                
+                if child.state == target:
+                    # return tuple (movie_id, actor_id)
+                    path=[]
+                    node = child
+
+                    while node.parent is not None:
+                        path.append((node.action, node.state))
+                        node = node.parent
+
+                    path.reverse()
+                    return path
+                frontier.add(child)
 
 
 def person_id_for_name(name):
