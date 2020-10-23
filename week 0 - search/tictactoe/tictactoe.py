@@ -18,15 +18,15 @@ def initial_state():
             [EMPTY, EMPTY, EMPTY],
             [EMPTY, EMPTY, EMPTY]]
 
-
 def player(board):
     """
     Returns player who has the next turn on a board.
     """
-    if count_player(board, X) >= count_player(board, O):
-        return X
-    elif count_player(board, O) > count_player(board, X):
+    if count_player(board, X) > count_player(board, O):
         return O
+    elif count_player(board, O) > count_player(board, X):
+        return X
+    return X
 
 def actions(board):
     """
@@ -37,7 +37,6 @@ def actions(board):
         for j, v in enumerate(value):
             if v == EMPTY:
                 move.add((i,j))
-    
     return move
 
 
@@ -45,10 +44,9 @@ def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-    print('movimiento, resultado',action)
     if action not in actions(board):
         raise ValueError
-
+    
     copy_board = copy.deepcopy(board)
     copy_board[action[0]][action[1]] = player(board)
 
@@ -77,7 +75,7 @@ def winner(board):
     # other diagonal win
     if (board[2][0] == board[1][1] == board[0][2]):
         return board[1][1]
-
+    
     # board is full?
     return None
 
@@ -86,7 +84,7 @@ def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    if winner(board):
+    if winner(board) or (count_player(board, X) + count_player(board, O)==9):
         return True
     return False
 
